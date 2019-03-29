@@ -70,17 +70,6 @@ def get_latest_message_from_channel(channel_id=randomId):
     )
 
 
-def post_message_test(message="", channel=botTestId):
-    latest = get_latest_message_from_channel(botTestId)['messages'][0]
-    latest_ts = latest['ts']
-    return client_write.api_call(
-        "chat.postMessage",
-        channel=channel,
-        text=message,
-        thread_ts=latest_ts
-    )
-
-
 def post_message(message="", channel=randomId):
     latest = get_latest_message_from_channel(channel)['messages'][0]
     latest_ts = latest['ts']

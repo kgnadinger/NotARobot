@@ -1,7 +1,7 @@
 from database import db
 from models import Message
 import markovify
-from slack_client import post_message
+from slack_client import post_message, botTestId
 
 
 def sentence_generator():
@@ -15,5 +15,4 @@ def sentence_generator():
 
     return text_model.make_sentence()
 
-# print(sentence_generator())
-post_message(sentence_generator(), channel='C0C1PA0D9')
+post_message(sentence_generator(), channel=botTestId)
