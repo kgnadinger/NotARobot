@@ -15,4 +15,8 @@ def sentence_generator():
 
     return text_model.make_sentence()
 
-post_message(sentence_generator(), channel=botTestId)
+
+def post_real_message():
+    return post_message(sentence_generator(), channel=botTestId)
+
+post_real_message()

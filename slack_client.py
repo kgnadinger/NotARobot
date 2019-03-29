@@ -51,6 +51,7 @@ def download_random_messages():
         if stop:
             break
         response = download_messages(curs)
+        print(response)
         save_messages(response["messages"])
         if "response_metadata" in response.keys() and "next_cursor" in response["response_metadata"]:
             curs = response["response_metadata"]["next_cursor"]
@@ -79,3 +80,6 @@ def post_message(message="", channel=randomId):
         text=message,
         thread_ts=latest_ts
     )
+
+
+download_random_messages()
