@@ -15,5 +15,5 @@ def sentence_generator():
 
     return text_model.make_sentence()
 
-
-post_message(sentence_generator())
+# print(sentence_generator())
+post_message(sentence_generator(), channel='C0C1PA0D9')

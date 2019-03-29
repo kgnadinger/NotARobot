@@ -1,18 +1,29 @@
 from slackclient import SlackClient
 from models import Message
-from database import db
-slack_write_token = "xoxp-2314941267-411607771605-593540160231-8033a3590a222c165da8d64439180880"
-slack_read_token = "xoxb-2314941267-583747499857-JkH90GZCEz5XQnICe1RKrOio"
+from database import db, cfg_file
+
+slack_write_token = cfg_file.get("slack", "slack_write_token")
+slack_read_token = cfg_file.get("slack", "slack_read_token")
 client_write = SlackClient(slack_write_token)
 client_read = SlackClient(slack_read_token)
 randomId = "C0298TP85"
 botTestId = "C0C9V4Q82"
-# list = client_read.api_call(
-#     "channels.list"
-# )
-#
-# for channel in list['channels']:
-#     print(channel)
+quotesId = 'C0C1PA0D9'
+
+
+def get_channel_list():
+    channel_list = client_read.api_call(
+        "channels.list"
+    )
+
+    channels = []
+    for channel in channel_list['channels']:
+        channels.append({'id': channel['id'], 'name': channel['name']})
+    return channels
+
+
+def get_channel_information(name):
+    return list(filter(lambda x: x['name'] == name, get_channel_list()))
 
 
 def download_messages(cursor=""):
@@ -59,23 +70,23 @@ def get_latest_message_from_channel(channel_id=randomId):
     )
 
 
-def post_message_test(message=""):
+def post_message_test(message="", channel=botTestId):
     latest = get_latest_message_from_channel(botTestId)['messages'][0]
     latest_ts = latest['ts']
     return client_write.api_call(
         "chat.postMessage",
-        channel=botTestId,
+        channel=channel,
         text=message,
         thread_ts=latest_ts
     )
 
 
-def post_message(message=""):
-    latest = get_latest_message_from_channel(randomId)['messages'][0]
+def post_message(message="", channel=randomId):
+    latest = get_latest_message_from_channel(channel)['messages'][0]
     latest_ts = latest['ts']
     return client_write.api_call(
         "chat.postMessage",
-        channel=randomId,
+        channel=channel,
         text=message,
         thread_ts=latest_ts
     )
